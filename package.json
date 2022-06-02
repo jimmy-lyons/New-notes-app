@@ -1,7 +1,6 @@
 {
   "name": "notes-app",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -22,5 +21,6 @@
     "esbuild": "^0.14.2",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0"
-  }
+  },
+  "description": ""
 }
