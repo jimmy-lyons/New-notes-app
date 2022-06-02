@@ -4,39 +4,61 @@
     return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
   };
 
-  // notesModel.js
+  // notesAPI.js
+  var require_notesAPI = __commonJS({
+    "notesAPI.js"(exports, module) {
+      var NotesAPI2 = class {
+        loadNotes = (callback) => {
+          fetch("http://localhost:3000/notes").then((response) => response.json()).then((data) => {
+            callback(data);
+          });
+        };
+      };
+      module.exports = NotesAPI2;
+    }
+  });
+
+  // src/notesModel.js
   var require_notesModel = __commonJS({
-    "notesModel.js"(exports, module) {
+    "src/notesModel.js"(exports, module) {
       var NotesModel2 = class {
         constructor() {
-          this.notesList = [];
+          this.notes = [];
         }
-        getNotes() {
-          return this.notesList;
+        setNotes(jsonData) {
+          this.notes = jsonData;
         }
+        getNotes = () => this.notes;
         addNote(note) {
-          this.notesList.push(note);
+          this.notes.push(note);
         }
-        reset() {
-          this.notesList = [];
-        }
+        reset = () => this.notes = [];
       };
       module.exports = NotesModel2;
     }
   });
 
-  // view.js
-  var require_view = __commonJS({
-    "view.js"(exports, module) {
+  // notesView.js
+  var require_notesView = __commonJS({
+    "notesView.js"(exports, module) {
       var NotesView2 = class {
-        constructor(model2) {
+        constructor(model2, api2) {
+          this.api = api2;
           this.model = model2;
           this.mainContainerEl = document.querySelector("#main-container");
-          console.log(this.mainContainerEl);
+          this.noteButtonEl = document.querySelector("#note-button");
+          this.noteButtonEl.addEventListener("click", () => {
+            this.model.addNote(document.querySelector("#new-note").value);
+            this.displayNotes();
+            document.querySelector("#new-note").value = "";
+          });
         }
         displayNotes() {
-          var notesArray = this.model.getNotes();
-          notesArray.forEach((note) => {
+          document.querySelectorAll(".note").forEach((element) => {
+            element.remove();
+          });
+          const notes = this.model.getNotes();
+          notes.forEach((note) => {
             const noteEl = document.createElement("div");
             noteEl.innerText = note;
             noteEl.className = "note";
@@ -48,13 +70,16 @@
     }
   });
 
-  // index.js
+  // src/index.js
+  var NotesAPI = require_notesAPI();
   var NotesModel = require_notesModel();
-  var NotesView = require_view();
+  var NotesView = require_notesView();
   console.log("The notes app is running");
+  var api = new NotesAPI();
   var model = new NotesModel();
   var view = new NotesView(model);
-  model.addNote("A first note");
-  model.addNote("Another one");
-  view.displayNotes();
+  api.loadNotes((notes) => {
+    model.setNotes(notes);
+    view.displayNotes();
+  });
 })();
