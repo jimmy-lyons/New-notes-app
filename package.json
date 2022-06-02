@@ -1,0 +1,26 @@
+{
+  "name": "notes-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild index.js --bundle  --outfile=bundle.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AKCDNG/notes-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AKCDNG/notes-app/issues"
+  },
+  "homepage": "https://github.com/AKCDNG/notes-app#readme",
+  "dependencies": {
+    "esbuild": "^0.14.2",
+    "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0"
+  }
+}
