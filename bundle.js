@@ -13,6 +13,20 @@
             callback(data);
           });
         };
+        async createNote(noteText) {
+          try {
+            fetch("http://localhost:3000/notes", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ note: noteText })
+            }).then((response) => response.json()).then((json) => console.log(json));
+          } catch (error) {
+            console.log(error);
+          }
+          ;
+        }
       };
       module.exports = NotesAPI2;
     }
@@ -48,7 +62,10 @@
           this.mainContainerEl = document.querySelector("#main-container");
           this.noteButtonEl = document.querySelector("#note-button");
           this.noteButtonEl.addEventListener("click", () => {
-            this.model.addNote(document.querySelector("#new-note").value);
+            console.log(document.querySelector("#new-note").value);
+            let note = this.api.createNote(document.querySelector("#new-note").value);
+            this.model.addNote(note);
+            this.api.loadNotes((notes) => model2.setNotes(notes));
             this.displayNotes();
             document.querySelector("#new-note").value = "";
           });
@@ -77,7 +94,7 @@
   console.log("The notes app is running");
   var api = new NotesAPI();
   var model = new NotesModel();
-  var view = new NotesView(model);
+  var view = new NotesView(model, api);
   api.loadNotes((notes) => {
     model.setNotes(notes);
     view.displayNotes();

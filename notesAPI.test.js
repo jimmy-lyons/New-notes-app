@@ -21,4 +21,9 @@ describe('NotesAPI class', () => {
       expect(notesArray.note2).toEqual("this is the second note");
     });
   });
+
+  it('adds new notes', async () => {
+
+    const api = new NotesAPI();
+  });
 });

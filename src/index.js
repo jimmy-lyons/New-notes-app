@@ -6,8 +6,7 @@ console.log("The notes app is running");
 
 const api = new NotesAPI();
 const model = new NotesModel();
-const view = new NotesView(model) //add API?
-
+const view = new NotesView(model, api);
 
 api.loadNotes((notes) => {
   model.setNotes(notes);
